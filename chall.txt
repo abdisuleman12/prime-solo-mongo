@@ -1,0 +1,71 @@
+// Create a collection named orders.
+
+  db.createCollection('orders')
+
+// Insert at least 3 documents that represent orders. IMPORTANT: See section below for fields. Order dates should be: 2017-02-03, 2017-04-04, 2017-01-02. 
+// Find all orders and make them look pretty.
+
+{
+	"_id" : ObjectId("599ef457599504d2ed7c9998"),
+	"orderDate" : "2017-02-03",
+	"orderTotal" : 63,
+	"lineItems" : [
+		{
+			"unitPrice" : 19,
+			"quantity" : 5,
+			"productName" : "fake cellphones"
+		}
+	]
+}
+{
+	"_id" : ObjectId("599ef543599504d2ed7c9999"),
+	"orderDate" : "2017-04-04",
+	"orderTotal" : 170.54,
+	"lineItems" : [
+		{
+			"unitPrice" : 14.99,
+			"quantity" : 2,
+			"productName" : "notebooks"
+		},
+		{
+			"unitPrice" : 15,
+			"quantity" : 5,
+			"productName" : "ducks"
+		}
+	]
+}
+{
+	"_id" : ObjectId("599ef55c599504d2ed7c999a"),
+	"orderDate" : "2017-01-02",
+	"orderTotal" : 170.54,
+	"lineItems" : [
+		{
+			"unitPrice" : 14.99,
+			"quantity" : 2,
+			"productName" : "transistor radio"
+		}
+	]
+}
+
+
+// Find all orders with an orderDate that is after 1/31/2017.
+
+    orders.find({'orderDate': {$gt: '2017-01-31'}}).pretty();
+
+
+// Change the orderTotal from 2/3/2017 to 63 dollars (you do NOT have to ensure the lineItems' unitPrice * quantity add up to the orderTotal)
+
+	orders.update({'orderDate': '2017-02-03'}, {$set: {'orderTotal': 63}});
+
+// Add another lineItem to the order from 4/4/2017
+
+	orders.update({'orderDate': '2017-04-04'}, {$push: {lineItems: {unitPrice: 15.00, quantity: 5, productName: 'ducks'}}});
+
+// Change the first lineItem in the order from 1/2/2017 to be for 2 'transistor radio's
+
+	orders.update({'orderDate': '2017-01-02'}, {$set: {'lineItems.0': {unitPrice: 14.99, quantity : 2, productName: 'transistor radio'}}})
+
+	// Find orders with lineItems that have a quantity that is less than 10, but greater than 2. You will have to research $and
+
+	orders.find({$and: [{'lineItems.quantity': {$lt: 10}}, {'lineItems.quantity': {$gt: 2}}]});
+
